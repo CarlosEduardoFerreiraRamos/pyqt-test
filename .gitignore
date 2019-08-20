@@ -1,0 +1,6 @@
+# virtual env
+/env
+/venv
+
+# vs code
+.vscode
