@@ -1,2 +1,6 @@
 PyQt5==5.13.0
 PyQt5-sip==4.19.18
+Jinja2==2.10.1
+MarkupSafe==1.1.1
+PyQt5==5.13.0
+PyQt5-sip==4.19.18

@@ -3,6 +3,12 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QLabel, QPushButton
 from PyQt5.QtGui import QPalette
 
+from .reader import Reader
+
+def get_file(self, path):
+    with open(path, 'r', encoding='UTF-8') as file:
+        return file.read()
+
 def dialog():
     mbox = QMessageBox()
     mbox.setText('Anything you may want to say.')
@@ -13,6 +19,12 @@ def dialog():
 if __name__ == "__main__":
     app = QApplication([])
     app.setStyle('Fusion')
+
+    stringFile = get_file('./script/test.txt')
+    reader = Reader()
+    reader.parse(stringFile)
+    reader.set_values({})
+    reader
 
     qp = QPalette()
     qp.setColor(QPalette.ButtonText, Qt.darkBlue)
