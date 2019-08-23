@@ -1,9 +1,13 @@
 import sys
+import os
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QLabel, QPushButton
 from PyQt5.QtGui import QPalette
 
 from .reader import Reader
+
+def create_folder(self, folderPath):
+        os.makedirs(folderPath, exist_ok=True)
 
 def get_file(self, path):
     with open(path, 'r', encoding='UTF-8') as file:
@@ -20,11 +24,14 @@ if __name__ == "__main__":
     app = QApplication([])
     app.setStyle('Fusion')
 
+    create_folder('./script/')
+    
     stringFile = get_file('./script/test.txt')
     reader = Reader()
     reader.parse(stringFile)
     reader.set_values({})
-    reader
+    template = reader.remder()
+    print('template', template)
 
     qp = QPalette()
     qp.setColor(QPalette.ButtonText, Qt.darkBlue)
