@@ -1,8 +1,14 @@
 import sys
 import os
+
+from docx import Document
+
+"""PyQt modules """
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QLabel, QPushButton
 from PyQt5.QtGui import QPalette
+
+"""intern modules """
 from reader import Reader
 
 def create_folder(folderPath):
@@ -23,15 +29,35 @@ if __name__ == "__main__":
 #     app = QApplication([])
 #     app.setStyle('Fusion')
 
-    create_folder('./script/')
-    
+    create_folder('./script/')    
     stringFile = get_file('./scripts/test.txt')
+
+    doc = Document('./scripts/doc.docx')
 #     stringFile = get_file('./scripts/doc.docx')
     reader = Reader()
     reader.parse(stringFile)
     reader.set_values({})
     template = reader.render()
-    print('template', template)
+#     print('template', template)
+#     for para in doc.paragraphs:
+#             if para.text:
+#                 print(para.text)
+#             else:
+#                 print('')
+
+    parag = doc.paragraphs[13]
+    print('doc', doc)
+    print('paragraph_format.first_line_indent', parag.paragraph_format.first_line_indent)
+    print('paragraph_format.left_indent', parag.paragraph_format.left_indent)
+    print('style.type', parag.style.type)
+    print('text', parag.text)
+
+#     print(dir(parag))
+#     for d in dir(parag):    
+#         print(d, para.)
+                    
+#     print('doc', doc.paragraphs)
+
 
 #     qp = QPalette()
 #     qp.setColor(QPalette.ButtonText, Qt.darkBlue)
