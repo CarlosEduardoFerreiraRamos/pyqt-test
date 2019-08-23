@@ -52,6 +52,26 @@ if __name__ == "__main__":
     print('style.type', parag.style.type)
     print('text', parag.text)
 
+"""
+process
+EXPLORATION
+        steps:
+                1 -  find blocks, find questions;
+                2 -  classify blocks, classify questions;
+                3 -  save data.
+
+EDITION
+        steps:
+                1 -  selection of target block;
+                2 -  any edition;
+                3 -  creation of new blocks every new edition.
+
+WRITING
+        steps:
+                1 -  choose blocks to make test;
+                2 -  choose randomization options;
+                3 -  write n number of tests. 
+"""
 #     print(dir(parag))
 #     for d in dir(parag):    
 #         print(d, para.)
