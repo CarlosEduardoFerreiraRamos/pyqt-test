@@ -15,4 +15,4 @@ class Reader(object):
         self.values = values
 
     def render(self):
-        self.template.render(self.value)
+        return self.template.render(self.values)
