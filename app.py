@@ -13,6 +13,9 @@ from PyQt5.QtGui import QPalette
 from reader import Reader
 from models.question import Question
 
+SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
+TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
+
 def create_folder(folderPath):
         os.makedirs(folderPath, exist_ok=True)
 
@@ -20,12 +23,19 @@ def get_file(path):
     with open(path, 'r', encoding='UTF-8') as file:
         return file.read()
 
-def dialog():
-    mbox = QMessageBox()
-    mbox.setText('Anything you may want to say.')
-    mbox.setDetailedText('Anything special you may want to talk about.')
-    mbox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    mbox.exec_()
+def write_files(paragraph_questions):
+    for index, pq in enumerate(paragraph_questions):
+        print('QUESTION N ', index)
+        length = len(os.listdir(SAVE_FOLDER))
+        d = Document()
+        for par in pq:
+            if par.text:
+                print(par.text)
+            else:
+                print('')
+            d.add_paragraph(par.text, par.style)
+        foder_path = ''.join([SAVE_FOLDER,'question_',str(length),'.docx'])
+        d.save(foder_path)
 
 def find_questions(paragraphs):
     questions = []
@@ -44,44 +54,54 @@ def find_questions(paragraphs):
             q.start = index
             questions.append(q)
     
-    questions[len(questions) - 1].end = len(paragraphs) -1
+    questions[len(questions) - 1].end = len(paragraphs)
     return questions
                 
+def extract_question(doc,question: Question):
+    questions_paragraphs = []
+    for index in range(question.start, question.end):
+        questions_paragraphs.append(doc.paragraphs[index])
+    return questions_paragraphs
 
+def dialog():
+    mbox = QMessageBox()
+    mbox.setText('Anything you may want to say.')
+    mbox.setDetailedText('Anything special you may want to talk about.')
+    mbox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    mbox.exec_()
 
 if __name__ == "__main__":
+    create_folder('./script/')
+
+    doc = Document(TARGET_FILE)
+    paragraph_questions = []
+    questions = find_questions(doc.paragraphs)
+    for question in questions:
+        paragraph_questions.append(extract_question(doc, question))
+        print('questions: ', question.start, question.end)
+
+    write_files(paragraph_questions)
+
 #     app = QApplication([])
 #     app.setStyle('Fusion')
-
-    create_folder('./script/')    
-    stringFile = get_file('./scripts/test.txt')
-
-# C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE
-    doc = Document('C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx')
+#     stringFile = get_file('./scripts/test.txt')
 #     stringFile = get_file('./scripts/doc.docx')
 #     reader = Reader()
 #     reader.parse(stringFile)
 #     reader.set_values({})
 #     template = reader.render()
 #     print('template', template)
-    for para in doc.paragraphs:
-        if para.text:
-            print(para.text)
-        else:
-            print('')
 
-    answers = find_questions(doc.paragraphs)
-    for item in answers:
-        print('questions: ', item.start, item.end)
-
-    parag = doc.paragraphs[10]
-    print('parag.alignment', parag.alignment)
-    print('paragraph_format.first_line_indent', parag.paragraph_format.first_line_indent)
-    print('paragraph_format.left_indent', parag.paragraph_format.left_indent)
+    # parag = doc.paragraphs[10]
+    # print('parag.alignment', parag.alignment)
+    # print('paragraph_format.first_line_indent', parag.paragraph_format.first_line_indent)
+    # print('paragraph_format.left_indent', parag.paragraph_format.left_indent)
     
-    print('style.type.base_style', parag.style.name)
-    print('style.type', parag.style.type)
-    print('text', parag.text)
+    # print('style.type.base_style', parag.style.name)
+    # print('style.type', parag.style.type)
+    # print('text', parag.text)
+
+
 
     """
     parag.alignment JUSTIFY (3)

@@ -13,4 +13,4 @@
 #### writing:
 * choose blocks to make test;
 * choose randomization options;
-* write n number of tests.
+* write n number of tests (DONE).

@@ -1,23 +1,23 @@
 class Question(object):
     def __init__ (self):
-        self.start = None
-        self.end = None
+        self.start: int
+        self.end: int
 
     @property
-    def start(self):
+    def start(self) -> int:
         return self._start
 
     @start.setter
-    def start(self, value):
+    def start(self, value: int):
         self._start = value
 
     @property
-    def end(self):
+    def end(self) -> int:
         return self._end
 
     @end.setter
-    def end(self, value):
+    def end(self, value: int):
         self._end = value
 
-    def has_close(self):
+    def has_close(self) -> bool:
         self.start != None
