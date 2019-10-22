@@ -7,7 +7,7 @@ from docx import Document
 
 """PyQt modules """
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QLabel, QPushButton, QFileDialog
 from PyQt5.QtGui import QPalette
 
 """intern modules """
@@ -15,6 +15,8 @@ from reader import Reader
 from models.question import Question
 from services import MockService
 
+from_file = ''
+to_file = ''
 SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
 TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
 
@@ -32,15 +34,42 @@ def dialog():
     mbox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     mbox.exec_()
 
+def select_file():
+    print('i have being clicked')
+    options = QFileDialog.Options()
+    QFileDialog.getOpenFileNames()
+    return 'path to file'
+
+def set_from_file(path):
+    from_file = path
+
+def set_to_file(path):
+    to_file = path
+
 if __name__ == "__main__":
-    create_folder('./script/')
+#     create_folder('./script/')
 
-    ms = MockService()
+#     ms = MockService()
 
-    ms.build_questions(TARGET_FILE)
+#     ms.build_questions(TARGET_FILE)
 
+    app = QApplication(sys.argv)
+    w = QWidget()
+    w.resize(600, 600)
+    w.setWindowTitle('File Manager')
 
-#     app = QApplication([])
+    # options = QFileDialog.Options()
+    # QFileDialog.getOpenFileNames()
+
+    btn = QPushButton(w)
+    btn.setText('Open File')
+    btn.show()
+    btn.move(110, 150)
+    btn.clicked.connect(lambda: set_from_file(select_file()))
+
+    w.show()
+    sys.exit(app.exec_())
+
 #     app.setStyle('Fusion')
 #     stringFile = get_file('./scripts/test.txt')
 #     stringFile = get_file('./scripts/doc.docx')
