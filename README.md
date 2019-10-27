@@ -4,6 +4,8 @@
 ## Development process
 #### exploration:
 * find blocks, find questions (DONE);
+* build base UI (DONE);
+* base UI integration;
 * classify blocks, classify questions;
 * save data.
 #### edition:
