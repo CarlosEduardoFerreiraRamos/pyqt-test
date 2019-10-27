@@ -33,18 +33,14 @@ def get_file(path):
     with open(path, 'r', encoding='UTF-8') as file:
         return file.read()
 
-def dialog():
-    mbox = QMessageBox()
-    mbox.setText('Anything you may want to say.')
-    mbox.setDetailedText('Anything special you may want to talk about.')
-    mbox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    mbox.exec_()
+def select_folder():
+    folder_path = QFileDialog.getExistingDirectory()
+    return folder_path if folder_path else '' 
 
 def select_file():
-    print('i have being clicked')
     options = QFileDialog.Options()
-    path, _  =QFileDialog.getOpenFileNames()
-    return path[0]
+    path, _  = QFileDialog.getOpenFileNames(options=options)
+    return path[0] if len(path) > 0 else ''
 
 def set_path(path, labelWidget, prop_name):
     paths.update({prop_name: path})
@@ -53,17 +49,16 @@ def set_path(path, labelWidget, prop_name):
 
 def manage_process_btn_access():
     if paths.get(FILE_PROP) and paths.get(FOLDER_PROP):
-        ms.build_questions(TARGET_FILE)
+        ms.build_questions(paths.get(FILE_PROP), paths.get(FOLDER_PROP))
     else:
         show_mensage_box()
     
 def show_mensage_box():
     msgBox = QMessageBox()
     msgBox.setIcon(QMessageBox.Information)
-    msgBox.setText("Bouth target file and folder must be selected to execute the process")
+    msgBox.setText("Both target file and folder must be selected to execute the process!")
     msgBox.setWindowTitle("Path Missing")
     msgBox.setStandardButtons(QMessageBox.Ok)
-    # msgBox.buttonClicked.connect(msgButtonClick)
     msgBox.exec()
 
 
@@ -112,7 +107,7 @@ if __name__ == "__main__":
     btnFolder.setText('Select Folder')
     btnFolder.show()
     btnFolder.move( 110,100)
-    btnFolder.clicked.connect(lambda: set_path(select_file(), lFolder, FOLDER_PROP))
+    btnFolder.clicked.connect(lambda: set_path(select_folder(), lFolder, FOLDER_PROP))
 
     w.show()
     sys.exit(app.exec_())

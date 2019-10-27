@@ -8,7 +8,8 @@ CONFIG_REPLACE_FILES = True
 
 class MockManager(object):
 
-    def build_questions(self, file_path: str) -> int:
+    def build_questions(self, file_path: str, folder_path: str) -> int:
+        CONFIG_SAVE_FOLDER = folder_path
         document = FileManager.get_document(file_path)
         questions_found: int
         if document is not None:
