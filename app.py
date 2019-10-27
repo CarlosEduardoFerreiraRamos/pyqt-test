@@ -4,10 +4,9 @@ import re
 
 from docx import Document
 
-
 """PyQt modules """
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QLabel, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QApplication, QLineEdit, QLabel, QWidget, QMessageBox, QLabel, QPushButton, QFileDialog
 from PyQt5.QtGui import QPalette
 
 """intern modules """
@@ -15,10 +14,17 @@ from reader import Reader
 from models.question import Question
 from services import MockService
 
-from_file = ''
-to_file = ''
+FILE_PROP = 'from_file' 
+FOLDER_PROP = 'to_folder'
+paths = {
+    FILE_PROP: '',
+    FOLDER_PROP: ''
+}
+
 SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
 TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
+
+ms = MockService()
 
 def create_folder(folderPath):
         os.makedirs(folderPath, exist_ok=True)
@@ -37,21 +43,32 @@ def dialog():
 def select_file():
     print('i have being clicked')
     options = QFileDialog.Options()
-    QFileDialog.getOpenFileNames()
-    return 'path to file'
+    path, _  =QFileDialog.getOpenFileNames()
+    return path[0]
 
-def set_from_file(path):
-    from_file = path
+def set_path(path, labelWidget, prop_name):
+    paths.update({prop_name: path})
+    labelWidget.setText(paths.get(prop_name))
+    labelWidget.show()
 
-def set_to_file(path):
-    to_file = path
+def manage_process_btn_access():
+    if paths.get(FILE_PROP) and paths.get(FOLDER_PROP):
+        ms.build_questions(TARGET_FILE)
+    else:
+        show_mensage_box()
+    
+def show_mensage_box():
+    msgBox = QMessageBox()
+    msgBox.setIcon(QMessageBox.Information)
+    msgBox.setText("Bouth target file and folder must be selected to execute the process")
+    msgBox.setWindowTitle("Path Missing")
+    msgBox.setStandardButtons(QMessageBox.Ok)
+    # msgBox.buttonClicked.connect(msgButtonClick)
+    msgBox.exec()
+
 
 if __name__ == "__main__":
 #     create_folder('./script/')
-
-#     ms = MockService()
-
-#     ms.build_questions(TARGET_FILE)
 
     app = QApplication(sys.argv)
     w = QWidget()
@@ -61,11 +78,41 @@ if __name__ == "__main__":
     # options = QFileDialog.Options()
     # QFileDialog.getOpenFileNames()
 
-    btn = QPushButton(w)
-    btn.setText('Open File')
-    btn.show()
-    btn.move(110, 150)
-    btn.clicked.connect(lambda: set_from_file(select_file()))
+    lProceed = QLineEdit(w)
+    lProceed.move(220,200)
+    lProceed.resize(280,38)
+    lProceed.setDisabled(True)
+    lProceed.show()
+
+    btnProceed = QPushButton(w)
+    btnProceed.setText('Proceed')
+    btnProceed.show()
+    btnProceed.move(110,200)
+    btnProceed.clicked.connect(lambda: manage_process_btn_access())
+
+    lFile = QLineEdit(w)
+    lFile.move(220,150)
+    lFile.resize(280,38)
+    lFile.setDisabled(True)
+    lFile.show()
+
+    btnFile = QPushButton(w)
+    btnFile.setText('Open File')
+    btnFile.show()
+    btnFile.move(110, 150)
+    btnFile.clicked.connect(lambda: set_path(select_file(), lFile, FILE_PROP))
+
+    lFolder = QLineEdit(w)
+    lFolder.move(220,100)
+    lFolder.resize(280,38)
+    lFolder.setDisabled(True)
+    lFolder.show()
+
+    btnFolder = QPushButton(w)
+    btnFolder.setText('Select Folder')
+    btnFolder.show()
+    btnFolder.move( 110,100)
+    btnFolder.clicked.connect(lambda: set_path(select_file(), lFolder, FOLDER_PROP))
 
     w.show()
     sys.exit(app.exec_())
