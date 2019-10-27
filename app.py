@@ -39,7 +39,7 @@ def select_folder():
 
 def select_file():
     options = QFileDialog.Options()
-    path, _  = QFileDialog.getOpenFileNames(options=options)
+    path, _  = QFileDialog.getOpenFileNames(filter='Text files (*.docx)',options=options)
     return path[0] if len(path) > 0 else ''
 
 def set_path(path, labelWidget, prop_name):
