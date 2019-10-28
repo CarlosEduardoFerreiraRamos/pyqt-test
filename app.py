@@ -13,6 +13,7 @@ from PyQt5.QtGui import QPalette
 from reader import Reader
 from models.question import Question
 from services import MockService
+from configuration import ConfigurationManager, Path
 
 FILE_PROP = 'from_file' 
 FOLDER_PROP = 'to_folder'

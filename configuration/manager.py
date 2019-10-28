@@ -1,8 +1,7 @@
 import shelve
 
-from configuration import Path
+from configuration.paths import Path
 
-CONFIG_FILE = './config_user.db'
 CONFIG_PROP = 'user_config'
 
 class ConfigurationManager(object):
@@ -23,7 +22,7 @@ class ConfigurationManager(object):
     def get_config() -> dict:
         config = None
         with shelve.open(Path.config_file()) as db:
-            config = db[CONFIG_PROP]
+            config = db.get(CONFIG_PROP, None)
         return config
 
     @staticmethod

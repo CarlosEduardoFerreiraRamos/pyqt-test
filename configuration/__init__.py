@@ -10,7 +10,4 @@ if db_configuration is None:
         data = json.load(d_config)
         ConfigurationManager.set_default_config(data)
 
-print('CONFIG SET')
-
-
 
