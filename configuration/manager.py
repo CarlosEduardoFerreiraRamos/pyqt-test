@@ -16,6 +16,11 @@ class ConfigurationManager(object):
 
     @staticmethod
     def set_config(value: str, prop: str) -> None:
+        with shelve.open(Path.config_file()) as db:
+            data = db[CONFIG_PROP]
+            data[prop] =  value
+            db[CONFIG_PROP] = data
+            db.close()
         pass
 
     @staticmethod

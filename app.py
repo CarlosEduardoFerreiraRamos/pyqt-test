@@ -15,8 +15,8 @@ from models.question import Question
 from services import MockService
 from configuration import ConfigurationManager, Path
 
-FILE_PROP = 'from_file' 
-FOLDER_PROP = 'to_folder'
+FILE_PROP = 'FILE_PROP' 
+FOLDER_PROP = 'FOLDER_PROP'
 paths = {
     FILE_PROP: '',
     FOLDER_PROP: ''
@@ -34,6 +34,15 @@ def get_file(path):
     with open(path, 'r', encoding='UTF-8') as file:
         return file.read()
 
+def set_default_values():
+    paths.update({
+        FILE_PROP: ConfigurationManager.get_config_value(FILE_PROP),
+        FOLDER_PROP: ConfigurationManager.get_config_value(FOLDER_PROP)
+    })
+    print(paths)
+    pass
+
+
 def select_folder():
     folder_path = QFileDialog.getExistingDirectory()
     return folder_path if folder_path else '' 
@@ -47,6 +56,7 @@ def set_path(path, labelWidget, prop_name):
     paths.update({prop_name: path})
     labelWidget.setText(paths.get(prop_name))
     labelWidget.show()
+    ConfigurationManager.set_config(path,prop_name)
 
 def manage_process_btn_access():
     if paths.get(FILE_PROP) and paths.get(FOLDER_PROP):
@@ -70,6 +80,7 @@ if __name__ == "__main__":
     w = QWidget()
     w.resize(600, 600)
     w.setWindowTitle('File Manager')
+    set_default_values()
 
     # options = QFileDialog.Options()
     # QFileDialog.getOpenFileNames()
@@ -89,6 +100,7 @@ if __name__ == "__main__":
     lFile = QLineEdit(w)
     lFile.move(220,150)
     lFile.resize(280,38)
+    lFile.setText(paths.get(FILE_PROP))
     lFile.setDisabled(True)
     lFile.show()
 
@@ -101,6 +113,7 @@ if __name__ == "__main__":
     lFolder = QLineEdit(w)
     lFolder.move(220,100)
     lFolder.resize(280,38)
+    lFolder.setText(paths.get(FOLDER_PROP))
     lFolder.setDisabled(True)
     lFolder.show()
 
