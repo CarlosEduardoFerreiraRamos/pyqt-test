@@ -11,15 +11,15 @@ from PyQt5.QtGui import QPalette
 
 """intern modules """
 from reader import Reader
-from models.question import Question
+from models import Question, ConfigProp
 from services import MockService
 from configuration import ConfigurationManager, Path
 
-FILE_PROP = 'FILE_PROP' 
-FOLDER_PROP = 'FOLDER_PROP'
+
+
 paths = {
-    FILE_PROP: '',
-    FOLDER_PROP: ''
+    ConfigProp.FILE_PROP(): '',
+    ConfigProp.FOLDER_PROP(): ''
 }
 
 SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
@@ -36,8 +36,8 @@ def get_file(path):
 
 def set_default_values():
     paths.update({
-        FILE_PROP: ConfigurationManager.get_config_value(FILE_PROP),
-        FOLDER_PROP: ConfigurationManager.get_config_value(FOLDER_PROP)
+        ConfigProp.FILE_PROP(): ConfigurationManager.get_config_value(ConfigProp.FILE_PROP()),
+        ConfigProp.FOLDER_PROP(): ConfigurationManager.get_config_value(ConfigProp.FOLDER_PROP())
     })
     print(paths)
     pass
@@ -59,8 +59,8 @@ def set_path(path, labelWidget, prop_name):
     ConfigurationManager.set_config(path,prop_name)
 
 def manage_process_btn_access():
-    if paths.get(FILE_PROP) and paths.get(FOLDER_PROP):
-        ms.build_questions(paths.get(FILE_PROP), paths.get(FOLDER_PROP))
+    if paths.get(ConfigProp.FILE_PROP()) and paths.get(ConfigProp.FOLDER_PROP()):
+        ms.build_questions(paths.get(ConfigProp.FILE_PROP()), paths.get(ConfigProp.FOLDER_PROP()))
     else:
         show_mensage_box()
     
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     lFile = QLineEdit(w)
     lFile.move(220,150)
     lFile.resize(280,38)
-    lFile.setText(paths.get(FILE_PROP))
+    lFile.setText(paths.get(ConfigProp.FILE_PROP()))
     lFile.setDisabled(True)
     lFile.show()
 
@@ -108,12 +108,12 @@ if __name__ == "__main__":
     btnFile.setText('Open File')
     btnFile.show()
     btnFile.move(110, 150)
-    btnFile.clicked.connect(lambda: set_path(select_file(), lFile, FILE_PROP))
+    btnFile.clicked.connect(lambda: set_path(select_file(), lFile, ConfigProp.FILE_PROP()))
 
     lFolder = QLineEdit(w)
     lFolder.move(220,100)
     lFolder.resize(280,38)
-    lFolder.setText(paths.get(FOLDER_PROP))
+    lFolder.setText(paths.get(ConfigProp.FOLDER_PROP()))
     lFolder.setDisabled(True)
     lFolder.show()
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     btnFolder.setText('Select Folder')
     btnFolder.show()
     btnFolder.move( 110,100)
-    btnFolder.clicked.connect(lambda: set_path(select_folder(), lFolder, FOLDER_PROP))
+    btnFolder.clicked.connect(lambda: set_path(select_folder(), lFolder, ConfigProp.FOLDER_PROP()))
 
     w.show()
     sys.exit(app.exec_())

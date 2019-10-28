@@ -14,8 +14,12 @@ class Path(object):
         return '{}/data_base'.format(Path.assets())
 
     @staticmethod
+    def default_config():
+        return '{}/default_config'.format(Path.assets())
+
+    @staticmethod
     def json_configuration():
-        return '{}/default_config.json'.format(Path.configuration())
+        return '{}/default_config.json'.format(Path.default_config())
 
     @staticmethod
     def config_file():
