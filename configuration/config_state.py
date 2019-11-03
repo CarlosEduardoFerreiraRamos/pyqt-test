@@ -1,9 +1,9 @@
 class ConfigState(object):
     __config: dict
-    def __new__(self):
-        if not hasattr(self, 'instance'):
-            self.instance = super().__new__(self)
-        return self.instance
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super().__new__(cls)
+        return cls.instance
 
     @property
     def config(self):
