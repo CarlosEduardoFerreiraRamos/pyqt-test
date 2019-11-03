@@ -11,5 +11,5 @@ class MainWidget(QWidget):
 
     def closeEvent(self, event):
         if self.func is not None:
-            self.func()
+            self.func() 
         event.accept()
