@@ -14,8 +14,7 @@ from reader import Reader
 from models import Question, ConfigProp
 from services import MockService
 from configuration import ConfigurationManager, Path
-
-
+from widget import MainWidget
 
 paths = {
     ConfigProp.FILE_PROP(): '',
@@ -77,9 +76,9 @@ if __name__ == "__main__":
 #     create_folder('./script/')
 
     app = QApplication(sys.argv)
-    w = QWidget()
-    w.resize(600, 600)
-    w.setWindowTitle('File Manager')
+    w = MainWidget()
+    w.func = lambda: print('being close')
+
     set_default_values()
 
     # options = QFileDialog.Options()
