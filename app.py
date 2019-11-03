@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     w = MainWidget()
-    w.func = lambda: print('being close')
+    w.func = lambda: ConfigurationManager.sync()
 
     set_default_values()
 

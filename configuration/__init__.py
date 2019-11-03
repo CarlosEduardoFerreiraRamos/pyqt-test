@@ -12,10 +12,10 @@ if db_configuration is None:
     with open(Path.json_configuration()) as d_config:
         data = json.load(d_config)
         data[ConfigProp.home_path()] = homePath.home() 
-        ConfigurationManager.set_default_config(data)
-        ConfigState().config = data
+        ConfigurationManager.set_db_config(data)
+        ConfigurationManager.set_state_config(data)
 else:
-    ConfigState().config = db_configuration
+    ConfigurationManager.set_state_config(db_configuration)
 
 print(ConfigState().config)
 

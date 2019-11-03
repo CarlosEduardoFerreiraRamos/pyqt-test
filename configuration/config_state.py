@@ -6,9 +6,9 @@ class ConfigState(object):
         return cls.instance
 
     @property
-    def config(self):
+    def config(self) -> dict:
         return self.__config
 
     @config.setter
-    def config(self, config):
+    def config(self, config: dict):
         self.__config = config

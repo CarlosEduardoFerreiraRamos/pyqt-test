@@ -1,6 +1,7 @@
 import shelve
 
 from configuration.paths import Path
+from configuration.config_state import ConfigState
 from models import ConfigProp
 
 class ConfigurationManager(object):
@@ -8,30 +9,39 @@ class ConfigurationManager(object):
         pass
 
     @staticmethod
-    def set_default_config(default_config: dict) -> None:
+    def set_db_config(default_config: dict) -> None:
+        """ Set configuration to shelve db """
         with shelve.open(Path.config_file()) as db:
             db[ConfigProp.PATHS_DB()] = default_config
         pass
 
     @staticmethod
-    def set_config(value: str, prop: str) -> None:
-        with shelve.open(Path.config_file()) as db:
-            data = db[ConfigProp.PATHS_DB()]
-            data[prop] =  value
-            db[ConfigProp.PATHS_DB()] = data
-        pass
-
-    @staticmethod
     def get_config() -> dict:
+        """Access configuration from shelve db"""
         config = None
         with shelve.open(Path.config_file()) as db:
             config = db.get(ConfigProp.PATHS_DB(), None)
         return config
 
     @staticmethod
+    def set_config(value: str, prop: str) -> None:
+        ConfigState.config.update({prop: value})
+
+    @staticmethod
     def get_config_value(prop: str) -> str:
-        value = ''
+        return ConfigState.config.get(prop, '')
+
+    @staticmethod
+    def set_state_config(data: dict) -> None:
+        ConfigState.config = data
+
+    @staticmethod
+    def get_state_config() -> dict:
+        return ConfigState.config
+
+    @staticmethod
+    def sync() -> None:
+        """ Synchronize the app reference with the shelve db """
         with shelve.open(Path.config_file()) as db:
-            config = db[ConfigProp.PATHS_DB()]
-            value = config[prop] if config is not None else ''
-        return value
+            db[ConfigProp.PATHS_DB()] = ConfigState.config
+        pass
