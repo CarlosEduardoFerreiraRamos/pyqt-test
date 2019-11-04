@@ -16,11 +16,6 @@ from services import MockService
 from configuration import ConfigurationManager, Path
 from widget import MainWidget
 
-paths = {
-    ConfigProp.FILE_PROP(): '',
-    ConfigProp.FOLDER_PROP(): ''
-}
-
 SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
 TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
 
@@ -34,32 +29,21 @@ def get_file(path):
         return file.read()
 
 def set_default_values():
-    paths.update({
-        ConfigProp.FILE_PROP(): ConfigurationManager.get_config_value(ConfigProp.FILE_PROP()),
-        ConfigProp.FOLDER_PROP(): ConfigurationManager.get_config_value(ConfigProp.FOLDER_PROP())
-    })
-    print(paths)
     pass
 
-
-def select_folder():
-    folder_path = QFileDialog.getExistingDirectory()
-    return folder_path if folder_path else '' 
-
-def select_file():
-    options = QFileDialog.Options()
-    path, _  = QFileDialog.getOpenFileNames(filter='Text files (*.docx)',options=options)
-    return path[0] if len(path) > 0 else ''
-
 def set_path(path, labelWidget, prop_name):
-    paths.update({prop_name: path})
-    labelWidget.setText(paths.get(prop_name))
-    labelWidget.show()
-    ConfigurationManager.set_config(path,prop_name)
+    if path:
+        ConfigurationManager.set_config(path,prop_name)
+        labelWidget.setText(path)
+        labelWidget.show()
+    else:
+        pass
 
 def manage_process_btn_access():
-    if paths.get(ConfigProp.FILE_PROP()) and paths.get(ConfigProp.FOLDER_PROP()):
-        ms.build_questions(paths.get(ConfigProp.FILE_PROP()), paths.get(ConfigProp.FOLDER_PROP()))
+    file_path = ConfigurationManager.get_config_value(ConfigProp.FILE_PROP())
+    folder_path = ConfigurationManager.get_config_value(ConfigProp.FOLDER_PROP())
+    if file_path and folder_path:
+        ms.build_questions(file_path, folder_path)
     else:
         show_mensage_box()
     
@@ -99,7 +83,7 @@ if __name__ == "__main__":
     lFile = QLineEdit(w)
     lFile.move(220,150)
     lFile.resize(280,38)
-    lFile.setText(paths.get(ConfigProp.FILE_PROP()))
+    lFile.setText(ConfigurationManager.get_config_value(ConfigProp.FILE_PROP()))
     lFile.setDisabled(True)
     lFile.show()
 
@@ -107,12 +91,12 @@ if __name__ == "__main__":
     btnFile.setText('Open File')
     btnFile.show()
     btnFile.move(110, 150)
-    btnFile.clicked.connect(lambda: set_path(select_file(), lFile, ConfigProp.FILE_PROP()))
+    btnFile.clicked.connect(lambda: set_path(w.select_file(), lFile, ConfigProp.FILE_PROP()))
 
     lFolder = QLineEdit(w)
     lFolder.move(220,100)
     lFolder.resize(280,38)
-    lFolder.setText(paths.get(ConfigProp.FOLDER_PROP()))
+    lFolder.setText(ConfigurationManager.get_config_value(ConfigProp.FOLDER_PROP()))
     lFolder.setDisabled(True)
     lFolder.show()
 
@@ -120,7 +104,7 @@ if __name__ == "__main__":
     btnFolder.setText('Select Folder')
     btnFolder.show()
     btnFolder.move( 110,100)
-    btnFolder.clicked.connect(lambda: set_path(select_folder(), lFolder, ConfigProp.FOLDER_PROP()))
+    btnFolder.clicked.connect(lambda: set_path(w.select_folder(), lFolder, ConfigProp.FOLDER_PROP()))
 
     w.show()
     sys.exit(app.exec_())

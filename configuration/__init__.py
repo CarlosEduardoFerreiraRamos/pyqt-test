@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path as homePath
 
 from configuration.manager import ConfigurationManager
@@ -11,7 +12,7 @@ db_configuration = ConfigurationManager.get_config()
 if db_configuration is None:
     with open(Path.json_configuration()) as d_config:
         data = json.load(d_config)
-        data[ConfigProp.home_path()] = homePath.home() 
+        data[ConfigProp.home_path()] = os.getenv('HOME') 
         ConfigurationManager.set_db_config(data)
         ConfigurationManager.set_state_config(data)
 else:
