@@ -40,14 +40,16 @@ class MockManager(object):
 
             is_list = paragraph.style.name == 'List Paragraph'
             has_question_number = re.match('^[0-9]\.', paragraph.text)
+            has_start = re.search('@start',paragraph.text)
 
-            if is_list or has_question_number:
+            if is_list or has_question_number or has_start:
                 leng = len(questions)
                 if leng != 0:
                     questions[leng -1].end = index -1
                 q = Question()
                 q.start = index
                 questions.append(q)
+                self.__format_paragraphs(paragraph, len(questions))
         questions[len(questions) - 1].end = len(paragraphs)
         return questions
                     
@@ -57,4 +59,9 @@ class MockManager(object):
             questions_paragraphs.append(doc.paragraphs[index])
         return questions_paragraphs
     
+    def __format_paragraphs(self,paragraph, length: int) -> None:
+        if re.search('@start',paragraph.text) is not None:
+            paragraph.clear()
+            paragraph.add_run('{} )'.format(length))
+        pass
     
