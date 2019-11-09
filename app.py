@@ -15,6 +15,7 @@ from models import Question, ConfigProp
 from services import MockService
 from configuration import ConfigurationManager, Path
 from widget import MainWidget
+from util import get_command_prop
 
 SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
 TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
@@ -64,18 +65,12 @@ def show_mensage_box():
     msgBox.setStandardButtons(QMessageBox.Ok)
     msgBox.exec()
 
-
-if __name__ == "__main__":
-#     create_folder('./script/')
-
+def build_desktop_ui():
     app = QApplication(sys.argv)
     w = MainWidget()
     w.func = lambda: ConfigurationManager.sync()
 
     set_default_values()
-
-    # options = QFileDialog.Options()
-    # QFileDialog.getOpenFileNames()
 
     lProceed = QLineEdit(w)
     lProceed.move(220,200)
@@ -118,66 +113,13 @@ if __name__ == "__main__":
     w.show()
     sys.exit(app.exec_())
 
-#     app.setStyle('Fusion')
-#     stringFile = get_file('./scripts/test.txt')
-#     stringFile = get_file('./scripts/doc.docx')
-#     reader = Reader()
-#     reader.parse(stringFile)
-#     reader.set_values({})
-#     template = reader.render()
-#     print('template', template)
 
-    # parag = doc.paragraphs[10]
-    # print('parag.alignment', parag.alignment)
-    # print('paragraph_format.first_line_indent', parag.paragraph_format.first_line_indent)
-    # print('paragraph_format.left_indent', parag.paragraph_format.left_indent)
+
+if __name__ == "__main__":
+
+    has_desc = get_command_prop('DESK') is not None
     
-    # print('style.type.base_style', parag.style.name)
-    # print('style.type', parag.style.type)
-    # print('text', parag.text)
-
-
-
-    """
-    parag.alignment JUSTIFY (3)
-    paragraph_format.first_line_indent -180340
-    paragraph_format.left_indent 180340
-    style.type.base_style List Paragraph
-    style.type PARAGRAPH (1)
-    text A partir da leitura do texto, analise as afirmações: (1,0)
-    """
-
-"""
-pyqt segment
-"""
-#     print(dir(parag))
-#     for d in dir(parag):    
-#         print(d, para.)
-                    
-#     print('doc', doc.paragraphs)
-
-
-#     qp = QPalette()
-#     qp.setColor(QPalette.ButtonText, Qt.darkBlue)
-#     qp.setColor(QPalette.Window, Qt.darkBlue)
-#     qp.setColor(QPalette.Button, Qt.darkCyan)
-#     app.setPalette(qp)
-
-
-#     w = QWidget()
-#     w.resize(300, 300)
-#     w.setWindowTitle('My python desktop app')
-
-#     label = QLabel(w)
-#     label.setText('Label of a label')
-#     label.move(100,130)
-#     label.show()
-
-#     btn = QPushButton(w)
-#     btn.setText('See something awesome')
-#     btn.move(100, 130)
-#     btn.show()
-#     btn.clicked.connect(dialog)
-
-#     w.show()
-#     sys.exit(app.exec_())
+    if has_desc:
+        build_desktop_ui()
+    else:
+        print("web server")
