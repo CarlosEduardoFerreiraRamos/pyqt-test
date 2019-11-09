@@ -32,8 +32,8 @@ class ConfigurationManager(object):
         ConfigState().config.update({prop: value})
 
     @staticmethod
-    def get_config_value(prop: str) -> str:
-        return ConfigState().config.get(prop, '')
+    def get_config_value(prop: str) -> list:
+        return ConfigState().config.get(prop, [])
 
     @staticmethod
     def set_state_config(data: dict) -> None:

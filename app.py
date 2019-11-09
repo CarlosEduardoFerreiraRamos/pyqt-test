@@ -31,7 +31,15 @@ def get_file(path):
 def set_default_values():
     pass
 
-def set_path(path, labelWidget, prop_name):
+def set_file_path(path, labelWidget, prop_name):
+    if path:
+        ConfigurationManager.set_config(path,prop_name)
+        labelWidget.setText(path[0])
+        labelWidget.show()
+    else:
+        pass
+
+def set_folder_path(path, labelWidget, prop_name):
     if path:
         ConfigurationManager.set_config(path,prop_name)
         labelWidget.setText(path)
@@ -43,7 +51,8 @@ def manage_process_btn_access():
     file_path = ConfigurationManager.get_config_value(ConfigProp.FILE_PROP())
     folder_path = ConfigurationManager.get_config_value(ConfigProp.FOLDER_PROP())
     if file_path and folder_path:
-        ms.build_questions(file_path, folder_path)
+        response = ms.build_questions(file_path, folder_path)
+        print('return', response)
     else:
         show_mensage_box()
     
@@ -83,7 +92,7 @@ if __name__ == "__main__":
     lFile = QLineEdit(w)
     lFile.move(220,150)
     lFile.resize(280,38)
-    lFile.setText(ConfigurationManager.get_config_value(ConfigProp.FILE_PROP()))
+    lFile.setText(ConfigurationManager.get_config_value(ConfigProp.FILE_PROP())[0])
     lFile.setDisabled(True)
     lFile.show()
 
@@ -91,7 +100,7 @@ if __name__ == "__main__":
     btnFile.setText('Open File')
     btnFile.show()
     btnFile.move(110, 150)
-    btnFile.clicked.connect(lambda: set_path(w.select_file(), lFile, ConfigProp.FILE_PROP()))
+    btnFile.clicked.connect(lambda: set_file_path(w.select_file(), lFile, ConfigProp.FILE_PROP()))
 
     lFolder = QLineEdit(w)
     lFolder.move(220,100)
@@ -104,7 +113,7 @@ if __name__ == "__main__":
     btnFolder.setText('Select Folder')
     btnFolder.show()
     btnFolder.move( 110,100)
-    btnFolder.clicked.connect(lambda: set_path(w.select_folder(), lFolder, ConfigProp.FOLDER_PROP()))
+    btnFolder.clicked.connect(lambda: set_folder_path(w.select_folder(), lFolder, ConfigProp.FOLDER_PROP()))
 
     w.show()
     sys.exit(app.exec_())

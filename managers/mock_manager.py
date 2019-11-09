@@ -3,35 +3,41 @@ import re
 from models import Question
 from managers import FileManager
 
-CONFIG_SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
-CONFIG_REPLACE_FILES = True
-
 class MockManager(object):
+    def __init__(self):
+        super().__init__()
+        self.config_save_forder = 'C:/Users/kadu_/Desktop/holder/'
+        self.CONFIG_REPLACE_FILES = True
 
-    def build_questions(self, file_path: str, folder_path: str) -> int:
-        CONFIG_SAVE_FOLDER = folder_path
-        document = FileManager.get_document(file_path)
-        questions_found: int
-        if document is not None:
-            selected_paragraphs = self.__find_questions(document.paragraphs)
-            paragraphs = []
-            for selected in selected_paragraphs:
-                paragraphs.append(self.__extract_question(document, selected))
-            questions_found = len(paragraphs)
-            try:
-                self.__write_files(paragraphs)
-            except NameError as error:
-                print(error)
-                return None
-        return questions_found or None
+    def build_questions(self, file_paths: list) -> int:
+        self.config_save_forder
+        questions_found = 0
+        paragraphs = []
+        documents = []
+
+        documents = list(map( lambda path: FileManager.get_document(path),file_paths))
+            
+        if len(documents) > 0:
+            for document in documents: 
+                selected_paragraphs = self.__find_questions(document.paragraphs)
+                for selected in selected_paragraphs:
+                    paragraphs.append(self.__extract_question(document, selected))
+                questions_found = len(paragraphs)
+        
+        try:
+            self.__write_files(paragraphs)
+            return questions_found or None
+        except NameError as error:
+            print(error)
+            return None
 
     def __write_files(self, questions: list) -> None:
         for index, question in enumerate(questions):
-            count = str(index if CONFIG_REPLACE_FILES else FileManager.get_file_count())
+            count = str(index if self.CONFIG_REPLACE_FILES else FileManager.get_file_count())
             document = FileManager.get_black_document()
             for paragraph in question:                
                 document.add_paragraph(paragraph.text, paragraph.style)
-            foder_path = ''.join([CONFIG_SAVE_FOLDER,'question_',count,'.docx'])
+            foder_path = ''.join([self.config_save_forder,'/question_',count,'.docx'])
             document.save(foder_path)
 
     def __find_questions(self, paragraphs: list) -> list:

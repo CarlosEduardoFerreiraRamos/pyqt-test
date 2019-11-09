@@ -17,11 +17,12 @@ class MainWidget(QWidget):
             self.func() 
         event.accept()
 
-    def select_folder(self):
+    def select_folder(self) -> str:
         folder_path = QFileDialog.getExistingDirectory(self,directory=ConfigurationManager.get_default_home_dir())
         return folder_path if folder_path else '' 
 
-    def select_file(self):
+    def select_file(self) -> list:
         options = QFileDialog.Options()
         path, _  = QFileDialog.getOpenFileNames(self,filter='Text files (*.docx)', directory=ConfigurationManager.get_default_home_dir(),options=options)
-        return path[0] if len(path) > 0 else ''
+        print(path)
+        return path if len(path) > 0 else ''
