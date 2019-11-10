@@ -10,9 +10,9 @@ from flask_restful import Api
 
 
 """PyQt modules """
-from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import Qt
 # from PyQt5.QtWidgets import QApplication, QLineEdit, QLabel, QWidget, QMessageBox, QLabel, QPushButton, QFileDialog
-from PyQt5.QtGui import QPalette
+# from PyQt5.QtGui import QPalette
 
 """intern modules """
 from reader import Reader
