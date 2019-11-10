@@ -20,7 +20,7 @@ from models import Question, ConfigProp
 from services import MockService, Question as QuestionService
 from configuration import ConfigurationManager, Path
 from widget import MainWidget
-from util import get_command_prop
+from util import get_command_prop  
 
 SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
 TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
