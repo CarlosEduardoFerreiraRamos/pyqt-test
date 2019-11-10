@@ -26,6 +26,10 @@ SAVE_FOLDER = 'C:/Users/kadu_/Desktop/holder/'
 TARGET_FILE = 'C:/Users/kadu_/Desktop/REC PT 2BI 2SERIE.docx'
 
 ms = MockService()
+app = Flask(__name__)
+api = Api(app)
+
+api.add_resource(QuestionService, '/question')
 
 def create_folder(folderPath):
         os.makedirs(folderPath, exist_ok=True)
@@ -130,10 +134,4 @@ def build_web_ui():
 
 
 if __name__ == "__main__":
-
-    has_desc = get_command_prop('DESK') is not None
-    
-    # if has_desc:
-    #     # build_desktop_ui()
-    # else:
-    build_web_ui()
+    app.run(debug=True)
