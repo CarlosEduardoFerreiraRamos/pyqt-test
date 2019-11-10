@@ -4,6 +4,11 @@ import re
 
 from docx import Document
 
+""" Flask moduels """
+from flask import Flask
+from flask_restful import Api
+
+
 """PyQt modules """
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QLineEdit, QLabel, QWidget, QMessageBox, QLabel, QPushButton, QFileDialog
@@ -12,7 +17,7 @@ from PyQt5.QtGui import QPalette
 """intern modules """
 from reader import Reader
 from models import Question, ConfigProp
-from services import MockService
+from services import MockService, Question as QuestionService
 from configuration import ConfigurationManager, Path
 from widget import MainWidget
 from util import get_command_prop
@@ -64,6 +69,16 @@ def show_mensage_box():
     msgBox.setWindowTitle("Path Missing")
     msgBox.setStandardButtons(QMessageBox.Ok)
     msgBox.exec()
+
+def build_web_ui():
+    app = Flask(__name__)
+    api = Api(app)
+
+    api.add_resource(QuestionService, '/question')
+
+    app.run(debug=True)
+    
+
 
 def build_desktop_ui():
     app = QApplication(sys.argv)
@@ -122,4 +137,4 @@ if __name__ == "__main__":
     if has_desc:
         build_desktop_ui()
     else:
-        print("web server")
+        build_web_ui()
