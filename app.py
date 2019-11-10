@@ -18,7 +18,7 @@ from flask_restful import Api
 from reader import Reader
 from models import Question, ConfigProp
 from services import MockService, Question as QuestionService
-from configuration import ConfigurationManager, Path
+# from configuration import ConfigurationManager, Path
 # from widget import MainWidget
 from util import get_command_prop  
 
@@ -41,21 +41,21 @@ def get_file(path):
 def set_default_values():
     pass
 
-def set_file_path(path, labelWidget, prop_name):
-    if path:
-        ConfigurationManager.set_config(path,prop_name)
-        labelWidget.setText(path[0])
-        labelWidget.show()
-    else:
-        pass
+# def set_file_path(path, labelWidget, prop_name):
+#     if path:
+#         ConfigurationManager.set_config(path,prop_name)
+#         labelWidget.setText(path[0])
+#         labelWidget.show()
+#     else:
+#         pass
 
-def set_folder_path(path, labelWidget, prop_name):
-    if path:
-        ConfigurationManager.set_config(path,prop_name)
-        labelWidget.setText(path)
-        labelWidget.show()
-    else:
-        pass
+# def set_folder_path(path, labelWidget, prop_name):
+#     if path:
+#         ConfigurationManager.set_config(path,prop_name)
+#         labelWidget.setText(path)
+#         labelWidget.show()
+#     else:
+        # pass
 
 # def manage_process_btn_access():
 #     file_path = ConfigurationManager.get_config_value(ConfigProp.FILE_PROP())
