@@ -137,4 +137,5 @@ def build_web_ui():
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    serve(app, listen='0.0.0.0:8080', expose_tracebacks=False, url_scheme='https')
+    print(os.environ.get('PORT'), 'is port')
+    serve(app, hots='0.0.0.0' , port ='8080', expose_tracebacks=False, url_scheme='https')
