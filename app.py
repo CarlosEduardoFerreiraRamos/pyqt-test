@@ -4,6 +4,8 @@ import re
 
 from docx import Document
 
+from waitress import serve
+
 """ Flask moduels """
 from flask import Flask
 from flask_restful import Api
@@ -134,4 +136,5 @@ def build_web_ui():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    serve(app, listen='0.0.0.0:8080', expose_tracebacks=False)
