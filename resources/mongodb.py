@@ -33,9 +33,7 @@ class MongoManager:
         return self.client[self.__db_name]
 
     def __get_collection(self):
-        v = self.__get_db()
-        print(v)
-        return v[self.__collection_name]
+        return self.__get_db()[self.__collection_name]
 
     def __close(self) -> None:
         self.client.close()
