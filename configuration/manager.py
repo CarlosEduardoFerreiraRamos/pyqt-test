@@ -1,5 +1,3 @@
-import shelve
-
 from configuration.paths import Path
 from configuration.config_state import ConfigState
 from models import ConfigProp
@@ -7,21 +5,6 @@ from models import ConfigProp
 class ConfigurationManager(object):
     def __init__(self):
         pass
-
-    @staticmethod
-    def set_db_config(default_config: dict) -> None:
-        """ Set configuration to shelve db """
-        with shelve.open(Path.config_file()) as db:
-            db[ConfigProp.PATHS_DB()] = default_config
-        pass
-
-    @staticmethod
-    def get_config() -> dict:
-        """Access configuration from shelve db"""
-        config = None
-        with shelve.open(Path.config_file()) as db:
-            config = db.get(ConfigProp.PATHS_DB(), None)
-        return config
 
     @staticmethod
     def get_default_home_dir() -> str:
@@ -42,10 +25,3 @@ class ConfigurationManager(object):
     @staticmethod
     def get_state_config() -> dict:
         return ConfigState().config
-
-    @staticmethod
-    def sync() -> None:
-        """ Synchronize the app reference with the shelve db """
-        with shelve.open(Path.config_file()) as db:
-            db[ConfigProp.PATHS_DB()] = ConfigState().config
-        pass

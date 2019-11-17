@@ -1,8 +1,10 @@
 import pymongo
-# self.__db.adress = "mongodb+srv://carlos_ramos:{}@omt-index-list-nzg4v.mongodb.net/omt-index-list?retryWrites=true&w=majority".format("HVmachine85")
+
+from configuration.manager import ConfigurationManager, ConfigProp
+
 class MongoManager:
     def __init__(self, db_name, collection_name):
-        self.__db_adress = "localhost:27017"
+        self.__db_adress = ConfigurationManager.get_config_value(ConfigProp.db_name())
         self.__db_name = db_name
         self.__collection_name = collection_name
     

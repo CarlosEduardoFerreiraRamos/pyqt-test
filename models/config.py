@@ -1,5 +1,3 @@
-
-
 class ConfigProp(object):
     def __init__(self):
         return
@@ -19,3 +17,7 @@ class ConfigProp(object):
     @staticmethod
     def home_path():
         return 'HOME_PATH'
+
+    @staticmethod
+    def db_name():
+        return 'db_name'

@@ -22,5 +22,9 @@ class Path(object):
         return '{}/default_config.json'.format(Path.default_config())
 
     @staticmethod
+    def prod_configuration():
+        return '{}/prod_config.json'.format(Path.default_config())
+
+    @staticmethod
     def config_file():
         return '{}/config_user.db'.format(Path.data_base())
