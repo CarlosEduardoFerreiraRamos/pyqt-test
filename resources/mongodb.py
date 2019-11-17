@@ -3,8 +3,8 @@ import pymongo
 class MongoManager:
     def __init__(self, db_name, collection_name):
         self.__db_adress = "localhost:27017"
-        self.__index_list_db_name = db_name
-        self.__index_list_name = collection_name
+        self.__db_name = db_name
+        self.__collection_name = collection_name
     
     def find_one(self):
         return self.__find_one()
@@ -26,7 +26,15 @@ class MongoManager:
         return entry
 
     def __get_db(self):
-        self.client[self.__index_list_db_name]
+        return self.client[self.__db_name]
 
     def __get_collection(self):
-        return self.__get_db(self.__index_list_db_name)
+        v = self.__get_db()
+        print(v)
+        return v[self.__collection_name]
+
+    def __close(self) -> None:
+        self.client.close()
+
+    def __connect(self) -> None:
+        self.client = pymongo.MongoClient(self.__db_adress)
