@@ -26,10 +26,17 @@ class Question(Resource):
         else:
             return self.manager.find()
 
-    def put(self, id=None) -> int:
-        request.form.get('data')
-        return {'value': 'nop'}
+    def put(self, id) -> int:
+        print(request.form.get('data'))
+        return {'value': 'updated'}, 200
 
+    def post(self) -> int:
+        print(request.form.get('data'))
+        return {'value', 'created'}, 200
+    
+    def delete(self, id) -> int:
+        print(request.form.get('data'))
+        return {'value': 'deleted'}, 200
 class QuestionList(Resource):
 
     def __init__(self):
