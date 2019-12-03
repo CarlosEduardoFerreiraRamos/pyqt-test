@@ -1,7 +1,10 @@
 import pymongo
 import json
+import datetime
+
 from bson import json_util
 
+from models.indexed_file import IndexedFile
 from configuration.manager import ConfigurationManager, ConfigProp
 
 class MongoManager:
@@ -9,12 +12,27 @@ class MongoManager:
         self.__db_adress = ConfigurationManager.get_config_value(ConfigProp.db_name())
         self.__db_name = db_name
         self.__collection_name = collection_name
+
+    def save(self, value):
+        return 
     
     def find_one(self):
         return self.__find_one()
 
     def find(self):
         return self.__find()
+
+    def update(self):
+        return
+
+    def delete(self):
+        return
+
+    def __save(self, value):
+        document = IndexedFile(value)
+        self.__connect()
+        collection = self.__get_collection()
+        collection.inser_one(document).get
 
     def __find(self):
         self.__connect()

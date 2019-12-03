@@ -16,12 +16,19 @@ class MockService(object):
 
 class Question(Resource):
 
-    def get(self) ->  int:
-        print('has being sent')
-        # value =  request.form['body']
-        # self.service.config_save_forder = value
-        return {'body': 'teste'}, 200
-        # return self.service.build_questions(file_path), 200 
+    def __init__(self):
+        super().__init__()
+        self.manager  = IndexListManager()
+
+    def get(self, id=None) ->  int:
+        if id is not None:
+            return self.manager.find_one()
+        else:
+            return self.manager.find()
+
+    def put(self, id=None) -> int:
+        request.form.get('data')
+        return {'value': 'nop'}
 
 class QuestionList(Resource):
 
@@ -35,6 +42,7 @@ class QuestionList(Resource):
             return self.manager.find_one()
         else:
             return self.manager.find()
+    
         
     
 

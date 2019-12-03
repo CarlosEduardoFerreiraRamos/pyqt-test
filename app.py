@@ -31,7 +31,7 @@ def output_json(data, code, headers=None):
     resp.headers.extend(headers or {})
     return resp
 
-api.add_resource(QuestionService, '/','/question')
+api.add_resource(QuestionService, '/','/question','/question/<int:id>' )
 api.add_resource(QuestionList,'/list', '/list/<int:id>')
 
 if __name__ == "__main__":
