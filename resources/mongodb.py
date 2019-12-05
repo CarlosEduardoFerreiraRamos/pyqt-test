@@ -3,6 +3,8 @@ import json
 import datetime
 
 from bson import json_util
+from bson.objectid import ObjectId
+
 
 from models.indexed_file import IndexedFile
 from configuration.manager import ConfigurationManager, ConfigProp
@@ -13,26 +15,23 @@ class MongoManager:
         self.__db_name = db_name
         self.__collection_name = collection_name
 
-    def save(self, value):
-        return 
-    
     def find_one(self):
         return self.__find_one()
 
     def find(self):
         return self.__find()
 
-    def update(self):
-        return
+    def save(self, doc: dict) -> int:
+        return self.__save(doc)
 
-    def delete(self):
-        return
+    def update(self, id, doc: dict) -> bool:
+        return self.__update(id, doc)
 
-    def __save(self, value):
-        document = IndexedFile(value)
-        self.__connect()
-        collection = self.__get_collection()
-        collection.inser_one(document).get
+    def delete(self, id) -> bool:
+        return self.__delete(id)
+
+    def generate_id(self, doc={}):
+        return ObjectId()
 
     def __find(self):
         self.__connect()
@@ -46,6 +45,26 @@ class MongoManager:
         entry = self.__get_collection().find_one()
         self.__close()
         return entry
+
+    def __delete(self, id) -> bool:
+        self.__connect()
+        result = self.__get_collection().delete_one({'_id': str(ObjectId(id))})
+        self.__close()
+        return result.deleted_count is not 0
+
+    def __update(self, id, doc: dict) -> bool:
+        self.__connect()
+        result = self.__get_collection().update_one({'_id':str(ObjectId(id))}, {'$set': doc})
+        self.__close()
+        return result.modified_count is not 0
+
+    def __save(self, doc: dict) -> int:
+        generated_id = self.generate_id(doc)
+        doc.update({'_id': generated_id})
+        self.__connect()
+        result = self.__get_collection().insert_one(doc)
+        self.__close()
+        return result.inserted_id
 
     def __get_db(self):
         return self.client[self.__db_name]
