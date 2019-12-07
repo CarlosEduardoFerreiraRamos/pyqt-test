@@ -1,6 +1,7 @@
 import pymongo
 import json
 import datetime
+import re
 
 from typing import  List
 from pymongo.database import Database
@@ -19,8 +20,8 @@ class MongoManager:
         self.__db_name = db_name
         self.__collection_name = collection_name
 
-    def find_one(self) ->  dict:
-        return self.__find_one()
+    def find_one(self, id: str) ->  dict:
+        return self.__find_one(id)
 
     def find(self) -> List:
         return self.__find()
@@ -40,6 +41,9 @@ class MongoManager:
     def generate_date(self):
         return datetime.datetime.utcnow()
 
+    def treat_id(self, id: str):
+        return re.compile(id)
+
     def __find(self) -> List:
         self.__connect()
         collection = self.__get_collection()
@@ -47,21 +51,21 @@ class MongoManager:
         self.__close()
         return listed
 
-    def __find_one(self) -> dict:
+    def __find_one(self, id: str) -> dict:
         self.__connect()
-        entry = self.__get_collection().find_one()
+        entry = self.__get_collection().find_one({'_id': self.treat_id(id)})
         self.__close()
         return entry
 
-    def __delete(self, id) -> bool:
+    def __delete(self, id: str) -> bool:
         self.__connect()
-        result = self.__get_collection().delete_one({'_id': str(ObjectId(id))})
+        result = self.__get_collection().delete_one({'_id': self.treat_id(id)})
         self.__close()
         return result.deleted_count is not 0
 
-    def __update(self, id, doc: dict) -> bool:
+    def __update(self, id: str, doc: dict) -> bool:
         self.__connect()
-        result = self.__get_collection().update_one({'_id':str(ObjectId(id))}, {'$set': doc})
+        result = self.__get_collection().update_one({'_id': self.treat_id(id)}, {'$set': doc})
         self.__close()
         return result.modified_count is not 0
 

@@ -22,7 +22,7 @@ class Question(Resource):
 
     def get(self, id=None) ->  int:
         if id is not None:
-            return self.manager.find_one()
+            return self.manager.find_one(id)
         else:
             return self.manager.find()
 
