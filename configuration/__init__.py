@@ -16,6 +16,7 @@ config_path = Path.prod_configuration() if is_prod else Path.json_configuration(
 
 mongo_key = os.environ.get('MONGO_ATLAS_KEY', None)
 mongo_user = os.environ.get('MONGO_ATLAS_USER', None)
+print(is_prod,mongo_key,mongo_user)
 
 if is_prod is True and (mongo_key is None or mongo_user is None):
     error_mensage = "No eviroment variable {}".format('MONGO_ATLAS_KEY' if mongo_user is not None else 'MONGO_ATLAS_USER')
