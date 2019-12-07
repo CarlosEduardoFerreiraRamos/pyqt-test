@@ -2,6 +2,9 @@ import pymongo
 import json
 import datetime
 
+from pymongo.database import Database
+from pymongo.collection import Collection
+
 from bson import json_util
 from bson.objectid import ObjectId
 
@@ -21,7 +24,7 @@ class MongoManager:
     def find(self):
         return self.__find()
 
-    def save(self, doc: dict) -> int:
+    def save(self, doc: dict) -> str:
         return self.__save(doc)
 
     def update(self, id, doc: dict) -> bool:
@@ -58,7 +61,7 @@ class MongoManager:
         self.__close()
         return result.modified_count is not 0
 
-    def __save(self, doc: dict) -> int:
+    def __save(self, doc: dict) -> str:
         generated_id = self.generate_id(doc)
         doc.update({'_id': generated_id})
         self.__connect()
@@ -66,10 +69,10 @@ class MongoManager:
         self.__close()
         return result.inserted_id
 
-    def __get_db(self):
+    def __get_db(self) -> Database:
         return self.client[self.__db_name]
 
-    def __get_collection(self):
+    def __get_collection(self) -> Collection:
         return self.__get_db()[self.__collection_name]
 
     def __close(self) -> None:
