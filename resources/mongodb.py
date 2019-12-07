@@ -2,6 +2,7 @@ import pymongo
 import json
 import datetime
 
+from typing import  List
 from pymongo.database import Database
 from pymongo.collection import Collection
 
@@ -18,10 +19,10 @@ class MongoManager:
         self.__db_name = db_name
         self.__collection_name = collection_name
 
-    def find_one(self):
+    def find_one(self) ->  dict:
         return self.__find_one()
 
-    def find(self):
+    def find(self) -> List:
         return self.__find()
 
     def save(self, doc: dict) -> str:
@@ -36,14 +37,17 @@ class MongoManager:
     def generate_id(self, doc={}):
         return ObjectId()
 
-    def __find(self):
+    def generate_date(self):
+        return datetime.datetime.utcnow()
+
+    def __find(self) -> List:
         self.__connect()
         collection = self.__get_collection()
         listed = list(collection.find())
         self.__close()
         return listed
 
-    def __find_one(self):
+    def __find_one(self) -> dict:
         self.__connect()
         entry = self.__get_collection().find_one()
         self.__close()
@@ -62,8 +66,7 @@ class MongoManager:
         return result.modified_count is not 0
 
     def __save(self, doc: dict) -> str:
-        generated_id = self.generate_id(doc)
-        doc.update({'_id': generated_id})
+        doc.update({'_id': self.generate_id(doc), 'created': self.generate_date()})
         self.__connect()
         result = self.__get_collection().insert_one(doc)
         self.__close()
