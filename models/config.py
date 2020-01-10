@@ -21,3 +21,7 @@ class ConfigProp(object):
     @staticmethod
     def db_name():
         return 'db_name'
+
+    @staticmethod
+    def db_postgres_name():
+        return 'db_postgres_name'

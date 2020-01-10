@@ -2,5 +2,6 @@
     "FILE_PROP": "",
     "FOLDER_PROP": "",
     "db_name": "localhost:27017",
+    "db_postgres_name": "postgresql+psycopg2://postgres:root@localhost/",
     "s3":""
 }
