@@ -15,8 +15,9 @@ from flask_restful import Api
 
 """ Must start first"""
 import configuration
-import resources
+import databases
 import models
+import resources
 
 from services import MockService, Question as QuestionService, QuestionList
 from util import get_command_prop  

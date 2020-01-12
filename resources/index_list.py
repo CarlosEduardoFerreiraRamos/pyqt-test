@@ -1,4 +1,4 @@
-from resources.mongodb import MongoManager
+from databases import MongoManager
 
 class IndexListManager(MongoManager):
     def __init__(self):

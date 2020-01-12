@@ -1,4 +1,4 @@
-from resources import Base
+from databases import Base
 from sqlalchemy import Table, Column, String, Integer, MetaData,Date
 
 class Entity(Base):  
