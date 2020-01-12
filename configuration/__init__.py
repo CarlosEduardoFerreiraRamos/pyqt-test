@@ -6,7 +6,7 @@ import logging
 from configuration.manager import ConfigurationManager
 from configuration.paths import Path
 from configuration.config_state import ConfigState
-from models import ConfigProp
+from configuration.config import ConfigProp
 from util import get_command_prop, NoEnviromentException
 
 logging.basicConfig(level=logging.DEBUG)

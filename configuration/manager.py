@@ -1,6 +1,6 @@
 from configuration.paths import Path
 from configuration.config_state import ConfigState
-from models import ConfigProp
+from configuration.config import ConfigProp
 
 class ConfigurationManager(object):
     def __init__(self):

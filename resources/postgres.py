@@ -1,5 +1,6 @@
 
 from sqlalchemy.orm import sessionmaker, Session, Query
+from typing import  List
 
 # from sqlalchemy import Table, Column, String, Integer, MetaData,Date
 # from sqlalchemy.ext.declarative import declarative_base  

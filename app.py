@@ -14,10 +14,11 @@ from flask_restful import Api
 """internal modules """
 
 """ Must start first"""
-from configuration import ConfigurationManager, Path
+import configuration
+import resources
+import models
 
 from reader import Reader
-from models import Question, ConfigProp
 from services import MockService, Question as QuestionService, QuestionList
 from util import get_command_prop  
 

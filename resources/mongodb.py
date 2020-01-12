@@ -10,8 +10,6 @@ from pymongo.collection import Collection
 from bson import json_util
 from bson.objectid import ObjectId
 
-
-from models.indexed_file import IndexedFile
 from configuration.manager import ConfigurationManager, ConfigProp
 
 class MongoManager:
