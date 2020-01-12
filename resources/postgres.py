@@ -1,12 +1,10 @@
 
-from sqlalchemy import create_engine  
-from sqlalchemy import Table, Column, String, Integer, MetaData,Date
-from sqlalchemy.ext.declarative import declarative_base  
-from sqlalchemy.orm import sessionmaker,Session,Query
+from sqlalchemy.orm import sessionmaker, Session, Query
 
-from configuration.manager import ConfigurationManager, ConfigProp
-
-
+# from sqlalchemy import Table, Column, String, Integer, MetaData,Date
+# from sqlalchemy.ext.declarative import declarative_base  
+# from sqlalchemy import create_engine  
+"""
 db_string = 'postgresql+psycopg2://postgres:root@localhost/'
 # db_string = "postgres://admin:donotusethispassword@aws-us-east-1-portal.19.dblayer.com:15813/compose"
 
@@ -40,7 +38,7 @@ base.metadata.create_all(db)
 session.query(Entity)
 for e in session.query(Entity):
     print(e.name)
-
+"""
 
 class PostgresManager:
 
