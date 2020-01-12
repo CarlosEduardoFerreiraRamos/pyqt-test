@@ -1,8 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from resources.index_list import IndexListManager
-from managers import MockManager
+from resources import MockManager,IndexListManager
 
 class MockService(object):
     def __init__(self):

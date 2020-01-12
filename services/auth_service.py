@@ -19,3 +19,22 @@ class User(Resource):
 
     def post(self):
         data = request.get_json()
+    
+class Entity(Resource):
+def __init__(self):
+        super().__init__()
+        self.manager  = None
+    
+    def get(self,id=None):
+        pass
+
+    def put(self, id):
+        data = request.get_json()
+        pass
+
+    def delete(self,id):
+        pass
+
+    def post(self):
+        data = request.get_json()
+

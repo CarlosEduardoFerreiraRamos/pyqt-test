@@ -18,7 +18,6 @@ import configuration
 import resources
 import models
 
-from reader import Reader
 from services import MockService, Question as QuestionService, QuestionList
 from util import get_command_prop  
 
