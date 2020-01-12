@@ -1,8 +1,8 @@
 
 from sqlalchemy import create_engine  
-from sqlalchemy import Table, Column, String, MetaData, Numeric
+from sqlalchemy import Table, Column, String, Integer, MetaData,Date
 from sqlalchemy.ext.declarative import declarative_base  
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker,Session,Query
 
 from configuration.manager import ConfigurationManager, ConfigProp
 
@@ -11,23 +11,27 @@ db_string = 'postgresql+psycopg2://postgres:root@localhost/'
 # db_string = "postgres://admin:donotusethispassword@aws-us-east-1-portal.19.dblayer.com:15813/compose"
 
 
-db = create_engine(db_string)  
+db = create_engine(db_string) 
+
+
 base = declarative_base()
 
 class Entity(base):  
     __tablename__ = 'entity'
 
-    id = Column(Numeric, primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
     email = Column(String)
     password = Column(String)
     token = Column(String)
+    created = Column(Date)
 
-Session = sessionmaker(db)  
-session = Session()
+s: Session = sessionmaker(db)
+session = s()
 
 
-first = Entity(id=10, name='admin', email='admin@gmail', password="123")
+first = Entity( name='adminTwo', email='admin@gmail', password="123")
+
 
 session.add(first)
 session.commit()
@@ -40,8 +44,78 @@ for e in session.query(Entity):
 
 class PostgresManager:
 
-    def __init__(self, db_name, collection_name):
-        self.__db_adress = ConfigurationManager.get_config_value(ConfigProp.db_name())
-        self.__db_name = db_name
-        self.__collection_name = collection_name
+    def __init__(self, db_sessionmaker, orm):
+        self.__sessionmaker = db_sessionmaker
+        self.__orm = orm
+        self.session: Session
+
+    def find_one(self, id: str) ->  dict:
+        return self.__find_one(id)
+
+    def find(self) -> List:
+        return self.__find()
+
+    def save(self, doc: dict) -> str:
+        return self.__save(doc)
+
+    def update(self, id, doc: dict) -> bool:
+        return self.__update(id, doc)
+
+    def delete(self, id) -> bool:
+        return self.__delete(id)
+
+    def generate_id(self, doc={}):
+        return ObjectId()
+
+    def generate_date(self):
+        return datetime.datetime.utcnow()
+
+    def treat_id(self, id: str):
+        return re.compile(id)
+
+    def __find(self) -> List:
+        self.__connect()
+        listed = self.__query().all()
+        self.__close()
+        return listed
+
+    def __find_one(self, id: str) -> dict:
+        self.__connect()
+        entity = self.__query().filter(self._orm.id == id).first()
+        self.__close()
+        return entity
+
+    def __delete(self, id: str) -> bool:
+        self.__connect()
+        result = self.__query().filter(self._orm.id == id)
+        self.__close()
+        return result.deleted_count is not 0
+
+    def __update(self, id: str, doc: dict) -> bool:
+        self.__connect()
+        result = self.__query().filter(self._orm.id == id).update(doc)
+        self.__close()
+        return result.modified_count is not 0
+
+    def __save(self, doc: dict) -> str:
+        doc.update({'created': self.generate_date()})
+        orm_doc = self.__orm(**doc)
+        self.__connect()
+        result = self.__get_session().add(orm_doc)
+        self.__close()
+        return result.inserted_id
+
+    def __get_session(self) -> Session:
+        return self.session
+
+    def __query(self) -> Query:
+        return self.__get_session().query(self.__orm)
+
+    def __close(self) -> None:
+        self.session.commit()
+        self.session.close()
+
+    def __connect(self) -> None:
+        self.session = self.__sessionmaker()
+
 
