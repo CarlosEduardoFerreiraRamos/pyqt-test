@@ -19,7 +19,7 @@ import databases
 import models
 import resources
 
-from services import MockService, Question as QuestionService, QuestionList
+from services import MockService, Question as QuestionService, QuestionList,EntityService
 from util import get_command_prop  
 
 ms = MockService()
@@ -63,6 +63,7 @@ def output_json(data, code, headers=None):
 
 api.add_resource(QuestionService, '/','/question','/question/<string:id>' )
 api.add_resource(QuestionList,'/list', '/list/<int:id>')
+api.add_resource(EntityService,'/auth', '/auth/<int:id>')
 
 if __name__ == "__main__":
     port = os.environ.get('PORT', 5000)

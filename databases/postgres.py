@@ -1,6 +1,7 @@
 
 from sqlalchemy.orm import sessionmaker, Session, Query
 from typing import  List
+import datetime
 
 # from sqlalchemy import Table, Column, String, Integer, MetaData,Date
 # from sqlalchemy.ext.declarative import declarative_base  
@@ -75,34 +76,46 @@ class PostgresManager:
     def __find(self) -> List:
         self.__connect()
         listed = self.__query().all()
+        # temporary treatment - start
+        if listed is not None:
+            listed = list(map(lambda e: e.__dict__, listed))
+        # end
         self.__close()
         return listed
 
     def __find_one(self, id: str) -> dict:
         self.__connect()
-        entity = self.__query().filter(self._orm.id == id).first()
+        entity = self.__query().filter(self.__orm.id == id).first()
+        # temporary treatment - start
+        if entity is not None:
+            entity = entity.__dict__ 
+        # end
         self.__close()
         return entity
 
     def __delete(self, id: str) -> bool:
         self.__connect()
-        result = self.__query().filter(self._orm.id == id)
+        result = self.__query().filter(self.__orm.id == id).delete()
         self.__close()
-        return result.deleted_count is not 0
+        return result is not 0
 
     def __update(self, id: str, doc: dict) -> bool:
         self.__connect()
-        result = self.__query().filter(self._orm.id == id).update(doc)
+        result = self.__query().filter(self.__orm.id == id).update(doc)
         self.__close()
-        return result.modified_count is not 0
+        return result is not 0
 
     def __save(self, doc: dict) -> str:
         doc.update({'created': self.generate_date()})
         orm_doc = self.__orm(**doc)
         self.__connect()
-        result = self.__get_session().add(orm_doc)
+        self.__get_session().add(orm_doc)
+        # temporary treatment - start
+        self.session.commit()
+        result = orm_doc.id 
+        # end
         self.__close()
-        return result.inserted_id
+        return result
 
     def __get_session(self) -> Session:
         return self.session

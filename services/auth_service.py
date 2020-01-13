@@ -1,6 +1,8 @@
 from flask_restful import Resource
 from flask import request
 
+from resources import EntityManager
+
 class User(Resource):
 
     def __init__(self):
@@ -20,21 +22,25 @@ class User(Resource):
     def post(self):
         data = request.get_json()
     
-class Entity(Resource):
-def __init__(self):
+class EntityService(Resource):
+    def __init__(self):
         super().__init__()
-        self.manager  = None
+        self.manager = EntityManager()
     
     def get(self,id=None):
-        pass
+        if id is not None:
+            return self.manager.find_one(id)
+        else:
+            return self.manager.find()
 
     def put(self, id):
         data = request.get_json()
-        pass
+        return self.manager.update(id, data)
 
     def delete(self,id):
-        pass
+        return self.manager.delete(id)
 
     def post(self):
         data = request.get_json()
+        return self.manager.save(data)
 
