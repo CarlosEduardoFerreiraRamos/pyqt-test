@@ -2,6 +2,6 @@
     "FILE_PROP": "",
     "FOLDER_PROP": "",
     "db_name": "mongodb+srv://{}:{}@omt-index-list-nzg4v.mongodb.net/omt-index-list?retryWrites=true&w=majority",
-    "db_postgres_name": "postgresql+psycopg2://postgres:root@localhost/",
+    "db_postgres_name": "{}",
     "s3":""
 }
