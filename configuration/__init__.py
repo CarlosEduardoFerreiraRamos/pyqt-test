@@ -19,11 +19,16 @@ mongo_user = os.environ.get('MONGO_ATLAS_USER', None)
 
 postgres_url = os.environ.get('HEROKU_POSTGRES_URL', None)
 
+auth_client_secret = os.environ.get('AUTH_CLIENT_SECRET', None)
+
 if is_prod is True and (mongo_key is None or mongo_user is None):
     raise NoEnviromentException("No eviroment variable {}".format('MONGO_ATLAS_KEY' if mongo_user is not None else 'MONGO_ATLAS_USER'))
 
 if is_prod is True and (postgres_url is None):
     raise NoEnviromentException("No eviroment variable {}".format('HEROKU_POSTGRES_URL'))
+
+if is_prod is True and (auth_client_secret is None):
+    raise NoEnviromentException("No eviroment variable {}".format('AUTH_CLIENT_SECRET'))
 
 with open(config_path) as d_config:
     data = json.load(d_config)
@@ -31,6 +36,8 @@ with open(config_path) as d_config:
     if is_prod:
         data[ConfigProp.db_name()] = data[ConfigProp.db_name()].format(mongo_user,mongo_key) 
         data[ConfigProp.db_postgres_name()] = data[ConfigProp.db_postgres_name()].format(postgres_url)
+        data[ConfigProp.db_postgres_name()] = data[ConfigProp.db_postgres_name()].format(postgres_url)
+        data[ConfigProp.auth_client_secret()] = data[ConfigProp.auth_client_secret()].format(auth_client_secret)
 
     ConfigurationManager.set_state_config(data)
 

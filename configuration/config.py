@@ -25,3 +25,21 @@ class ConfigProp(object):
     @staticmethod
     def db_postgres_name():
         return 'db_postgres_name'
+
+    @staticmethod
+    def auth_server_url():
+        return 'auth_server_url'
+
+    @staticmethod
+    def auth_env():
+        return 'auth_env'
+
+    @staticmethod
+    def auth_client_id():
+        return 'auth_client_id'
+
+    @staticmethod
+    def auth_client_secret():
+        return 'auth_client_secret'
+
+    

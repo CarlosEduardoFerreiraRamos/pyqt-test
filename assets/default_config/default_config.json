@@ -3,5 +3,9 @@
     "FOLDER_PROP": "",
     "db_name": "localhost:27017",
     "db_postgres_name": "postgresql+psycopg2://postgres:root@localhost/",
-    "s3":""
+    "s3":"",
+    "auth_client_id":"omt-server",
+    "auth_client_secret":"a9433638-d008-409e-9a27-6b6c20a5e02e",
+    "auth_server_url": "http://localhost:8080",
+    "auth_env":"dev"
 }
