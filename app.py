@@ -61,6 +61,7 @@ api = Api(app)
 def protect():
     token = request.headers.get('Authorization', ' ').split(' ')[1]
     user = auth_user(token)
+    print('user',user)
     if user is None:
         return make_response({'auth_error': 'auth fail'},401)
     pass
