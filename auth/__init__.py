@@ -26,11 +26,19 @@ def build_auth_function():
     is_prod = get_command_prop('--PROD') is not None
 
     def prod_auth(token):
+        """
+        Referense https://auth0.com/docs/quickstart/backend/python
+        """
         try:
-            AUTH0_DOMAIN= 'dev-31b5r0mn.auth0.com'
+            AUTH0_DOMAIN = 'dev-31b5r0mn.auth0.com'
+            API_AUDIENCE = 'https://omt-auth'
+            ALGORITHMS = ["RS256"]
             jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
+            print('jsonurl',jsonurl)
             jwks = json.loads(jsonurl.read())
+            print('jwks',jwks)
             unverified_header = jwt.get_unverified_header(token)
+            print('unverified_header',unverified_header)
             rsa_key = {}
 
             for key in jwks["keys"]:
