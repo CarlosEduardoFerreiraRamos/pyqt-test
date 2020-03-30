@@ -30,10 +30,10 @@ def build_auth_function():
         Referense https://auth0.com/docs/quickstart/backend/python
         """
         try:
-            AUTH0_DOMAIN = 'dev-31b5r0mn.auth0.com'
-            API_AUDIENCE = 'https://omt-auth'
+            AUTH0_DOMAIN = ConfigurationManager.get_config_value(ConfigProp.auth_domain())# "https://dev-31b5r0mn.auth0.com"
+            API_AUDIENCE =  ConfigurationManager.get_config_value(ConfigProp.auth_client())#'https://omt-auth'
             ALGORITHMS = ["RS256"]
-            jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
+            jsonurl = urlopen(AUTH0_DOMAIN+"/.well-known/jwks.json")
             print('jsonurl',jsonurl)
             jwks = json.loads(jsonurl.read())
             print('jwks',jwks)
@@ -57,7 +57,7 @@ def build_auth_function():
                         rsa_key,
                         algorithms=ALGORITHMS,
                         audience=API_AUDIENCE,
-                        issuer="https://"+AUTH0_DOMAIN+"/"
+                        issuer=AUTH0_DOMAIN+"/"
                     )
                 except Exception:
                     return None

@@ -42,4 +42,12 @@ class ConfigProp(object):
     def auth_client_secret():
         return 'auth_client_secret'
 
+    @staticmethod
+    def auth_domain():
+        return 'auth_domain'
+
+    @staticmethod
+    def auth_client():
+        return 'auth_client'
+
     
